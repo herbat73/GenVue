@@ -6,6 +6,7 @@ This repo contains an AspNetCore 2 + Vue.js 2 starter template (VS2017) + NetCor
 # Table of Contents
 
 * [Features](#features)
+* [TechStack](#techstack)
 * [Prerequisites](#prerequisites)
 * [Installation - Getting Started!](#installation)
 * [Extras](#extras)
@@ -14,6 +15,33 @@ This repo contains an AspNetCore 2 + Vue.js 2 starter template (VS2017) + NetCor
 * [Vue & ASP.NET Consulting & training](##looking-for-vue--javascript-or-aspnet-consulting--training--support)
 
 # Features
+
+* Full responsive app accessed by Web or WebAPI (eg. postman client)
+
+![Full responsive app](/Docs/1_start.png)
+
+* Role level permission (admin, manager, user)
+
+![Role level permission](/Docs/2_login_admin.png)
+
+* Role context page display
+
+![Role context page display](/Docs/3_admin_page.png)
+
+* Admin can manage users, users groups, file categories, check users activity logs
+
+![Admin can manage](/Docs/5_users_ibn_groups.png)
+
+* User with role 'manager' has rigth to upload files to selected group and file category or private files with drag and drop functionality
+
+![Manager role](/Docs/7_manager_upload.png)
+
+* Users can download files from groups they belongs to
+
+![Manager role](/Docs/8_user_download.png)
+
+
+# TechStack
 
 - **ASP.NET Core 2.0**
   - Web API
@@ -40,7 +68,7 @@ This repo contains an AspNetCore 2 + Vue.js 2 starter template (VS2017) + NetCor
 finally
  
  * Run the application in VSCode or Visual Studio 2017 (Hit `F5`) or command ('dotnet run') - Vue Dev Tools are enebled
- * Browse to [http://localhost:49867](http://localhost:49867)
+ * Browse to [http://localhost:53703](http://localhost:53703)
 
 # Extras
 
