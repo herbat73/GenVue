@@ -1,0 +1,83 @@
+.content-container {
+  margin: 2rem;
+}
+
+.center {
+  text-align: center;
+}
+
+
+/*.content {
+  background: #303030
+}*/
+
+.intro {
+  margin-bottom: 5%;
+}
+
+.fill {
+  height: 100%;
+}
+
+.slide-enter-active,
+.slide-enter {
+  transition: all .3s ease;
+}
+
+.slide-enter,
+.slide-leave-to {
+  opacity: 0;
+}
+
+.slide-enter {
+  transform: translateX(-3rem);
+}
+
+.slide-leave,
+.slide-leave-active {
+  transition: all .4s ease;
+}
+
+.slide-leave-to {
+  transform: translateX(3rem);
+}
+
+/*
+Tools
+*/
+
+.mg-top {
+  margin-top: 2%;
+}
+
+.mg-wrap, .m-w {
+  margin-top: 2%;
+  margin-bottom: 2%;
+}
+
+.p-section {
+  margin-top: 3%;
+  margin-bottom: 3%;
+}
+
+.invisible {
+  display: none;
+}
+
+.t-left {
+  text-align: left;
+}
+
+.t-right {
+  text-align: right;
+}
+
+/*
+App Title
+*/
+
+.app-title {
+  font-size: 3.4rem;
+  letter-spacing: .02rem;
+  font-weight: 300;
+}
