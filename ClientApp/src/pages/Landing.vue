@@ -30,7 +30,7 @@ export default {
         {
           name: 'Source',
           icon: 'code',
-          link: 'https://deskdoo.visualstudio.com/_git/GenVue',
+          link: 'https://github.com/herbat73/GenVue',
           color: 'warning'
         },
         {
