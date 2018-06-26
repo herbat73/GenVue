@@ -68,7 +68,7 @@ This repo contains an AspNetCore 2 + Vue.js 2 starter template (VS2017) + NetCor
 finally
  
  * Run the application in VSCode or Visual Studio 2017 (Hit `F5`) or command ('dotnet run') - Vue Dev Tools are enebled
- * Browse to [http://localhost:53703](http://localhost:53703)
+ * Browse to [http://T:53703](http://T:53703)
 
 # Extras
 

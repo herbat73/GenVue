@@ -2,22 +2,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.Extensions.Logging;
-using Microsoft.Net.Http.Headers;
 using System;
-using OpenIddict.Core;
-using OpenIddict.Models;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Identity;
 using GenVue.Model;
 using GenVue.ViewModels.Api;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using GenVue.Configuration;
 using Microsoft.AspNetCore.Authorization;
@@ -25,8 +16,6 @@ using AspNet.Security.OAuth.Validation;
 using GenVue.Services;
 using GenVue.Model.Consts;
 using Microsoft.EntityFrameworkCore;
-using System.Net.Http;
-using System.Net;
 
 namespace GenVue.Controllers
 {

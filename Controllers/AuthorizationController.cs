@@ -13,7 +13,6 @@ using AspNet.Security.OpenIdConnect.Primitives;
 using AspNet.Security.OpenIdConnect.Server;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -22,10 +21,10 @@ using GenVue.Model;
 using GenVue.ViewModels.Authorization;
 using GenVue.ViewModels.Shared;
 using OpenIddict.Core;
-using OpenIddict.Models;
 using GenVue.Services;
 using GenVue.Model.Consts;
 using OpenIddict.Abstractions;
+using OpenIddict.EntityFrameworkCore.Models;
 
 namespace GenVue.Controllers
 {

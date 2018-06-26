@@ -14,12 +14,13 @@ using GenVue.Services;
 using GenVue.Model.InitData;
 using System.Threading;
 using OpenIddict.Core;
-using OpenIddict.Models;
 using NLog.Extensions.Logging;
 using NLog.Web;
 using GenVue.Middleware;
 using System.IO;
 using GenVue.Configuration;
+using OpenIddict.Abstractions;
+using OpenIddict.EntityFrameworkCore.Models;
 
 namespace GenVue
 {
@@ -110,63 +111,23 @@ namespace GenVue
             services.AddAuthentication()
                 .AddOAuthValidation();
 
-            //// Register the OpenIddict services.
-            //services.AddOpenIddict(options =>
-            //{
-            //    // Register the Entity Framework stores.
-            //    options.AddEntityFrameworkCoreStores<DefaultDbContext>();
-
-            //    // Register the ASP.NET Core MVC binder used by OpenIddict.
-            //    // Note: if you don't call this method, you won't be able to
-            //    // bind OpenIdConnectRequest or OpenIdConnectResponse parameters.
-            //    options.AddMvcBinders();
-
-            //    // Enable the authorization, logout, token and userinfo endpoints.
-            //    options.EnableAuthorizationEndpoint("/api/connect/authorize")
-            //           .EnableLogoutEndpoint("/api/connect/logout")
-            //           .EnableTokenEndpoint("/api/connect/token")
-            //           .EnableUserinfoEndpoint("/api/userinfo");
-
-            //    // Note: the Mvc.Client sample only uses the code flow and the password flow, but you
-            //    // can enable the other flows if you need to support implicit or client credentials.
-            //    options.AllowAuthorizationCodeFlow()
-            //           .AllowPasswordFlow()
-            //           .AllowRefreshTokenFlow();
-
-            //    // Mark the "profile" scope as a supported scope in the discovery document.
-            //    options.RegisterScopes(OpenIdConnectConstants.Scopes.Profile);
-
-            //    // Make the "client_id" parameter mandatory when sending a token request.
-            //    options.RequireClientIdentification();
-
-            //    // When request caching is enabled, authorization and logout requests
-            //    // are stored in the distributed cache by OpenIddict and the user agent
-            //    // is redirected to the same page with a single parameter (request_id).
-            //    // This allows flowing large OpenID Connect requests even when using
-            //    // an external authentication provider like Google, Facebook or Twitter.
-            //    options.EnableRequestCaching();
-
-            //    // During development, you can disable the HTTPS requirement.
-            //    options.DisableHttpsRequirement();
-            //});
-
-            // Register the OpenIddict services.
             services.AddOpenIddict()
-                .AddCore(options =>
-                {
-                    // Configure OpenIddict to use the default entities.
-                    options.UseDefaultModels();
 
-                    // Register the Entity Framework stores.
-                    options.AddEntityFrameworkCoreStores<DefaultDbContext>();
-                        })
+            // Register the OpenIddict core services.
+            .AddCore(options =>
+            {
+                            // Register the Entity Framework stores and models.
+                            options.UseEntityFrameworkCore()
+                       .UseDbContext<DefaultDbContext>();
+            })
 
-                        .AddServer(options =>
-                        {
+            // Register the OpenIddict server handler.
+            .AddServer(options =>
+            {
                             // Register the ASP.NET Core MVC binder used by OpenIddict.
                             // Note: if you don't call this method, you won't be able to
                             // bind OpenIdConnectRequest or OpenIdConnectResponse parameters.
-                            options.AddMvcBinders();
+                            options.UseMvc();
 
                             // Enable the authorization, logout, token and userinfo endpoints.
                             options.EnableAuthorizationEndpoint("/api/connect/authorize")
@@ -174,17 +135,18 @@ namespace GenVue
                                    .EnableTokenEndpoint("/api/connect/token")
                                    .EnableUserinfoEndpoint("/api/userinfo");
 
-                            // Allow client applications to use the code flow.
-                            // Allow client applications to use the grant_type=password flow.
-                            options.AllowAuthorizationCodeFlow()
+                            options.AllowClientCredentialsFlow()
+                                   .AllowAuthorizationCodeFlow()
                                    .AllowPasswordFlow()
                                    .AllowRefreshTokenFlow();
 
-                            // Mark the "profile" scope as a supported scope in the discovery document.
-                            options.RegisterScopes(OpenIdConnectConstants.Scopes.Profile);
+                            // Mark the "email", "profile" and "roles" scopes as supported scopes.
+                            options.RegisterScopes(OpenIdConnectConstants.Scopes.Email,
+                                                   OpenIdConnectConstants.Scopes.Profile,
+                                                   OpenIddictConstants.Scopes.Roles);
 
-                            // Make the "client_id" parameter mandatory when sending a token request.
-                            options.RequireClientIdentification();
+                            // Accept anonymous clients (i.e clients that don't send a client_id).
+                            //options.AcceptAnonymousClients();
 
                             // When request caching is enabled, authorization and logout requests
                             // are stored in the distributed cache by OpenIddict and the user agent
@@ -195,8 +157,19 @@ namespace GenVue
 
                             // During development, you can disable the HTTPS requirement.
                             options.DisableHttpsRequirement();
+
+                            // Note: to use JWT access tokens instead of the default
+                            // encrypted format, the following lines are required:
+                            //
+                            // options.UseJsonWebTokens();
+                            // options.AddEphemeralSigningKey();
                         })
-                .AddValidation();
+
+            // Register the OpenIddict validation handler.
+            // Note: the OpenIddict validation handler is only compatible with the
+            // default token format or with reference tokens and cannot be used with
+            // JWT tokens. For JWT tokens, use the Microsoft JWT bearer handler.
+            .AddValidation();
 
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
@@ -206,16 +179,12 @@ namespace GenVue
             {
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
             });
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddNLog();
-
-            //add NLog.Web
-            app.AddNLogWeb();
 
             app.UseRequestIPMiddleware();
 
@@ -282,8 +251,20 @@ namespace GenVue
                         ClientId = "mvc",
                         ClientSecret = "101564A5-E7FE-42CB-B10D-61EF6A8F3651",
                         DisplayName = "MVC client application",
-                        PostLogoutRedirectUris = { new Uri("http://localhost:49867/signout-callback-oidc") },
-                        RedirectUris = { new Uri("http://localhost:49867/signin-oidc") }
+                        PostLogoutRedirectUris = { new Uri("http://localhost:53507/signout-callback-oidc") },
+                        RedirectUris = { new Uri("http://localhost:53507/signin-oidc") },
+                        Permissions =
+                        {
+                            OpenIddictConstants.Permissions.Endpoints.Authorization,
+                            OpenIddictConstants.Permissions.Endpoints.Logout,
+                            OpenIddictConstants.Permissions.Endpoints.Token,
+                            OpenIddictConstants.Permissions.GrantTypes.AuthorizationCode,
+                            OpenIddictConstants.Permissions.GrantTypes.RefreshToken,
+                            OpenIddictConstants.Permissions.Scopes.Email,
+                            OpenIddictConstants.Permissions.Scopes.Profile,
+                            OpenIddictConstants.Permissions.Scopes.Roles,
+                            OpenIddictConstants.Permissions.GrantTypes.Password
+                        }
                     };
 
                     await manager.CreateAsync(descriptor, cancellationToken);
@@ -304,7 +285,16 @@ namespace GenVue
                     {
                         ClientId = "postman",
                         DisplayName = "Postman",
-                        RedirectUris = { new Uri("https://www.getpostman.com/oauth2/callback") }
+                        RedirectUris = { new Uri("https://www.getpostman.com/oauth2/callback") },
+                        Permissions =
+                        {
+                            OpenIddictConstants.Permissions.Endpoints.Token,
+                            OpenIddictConstants.Permissions.GrantTypes.Password,
+                            OpenIddictConstants.Permissions.GrantTypes.RefreshToken,
+                            OpenIddictConstants.Permissions.Scopes.Email,
+                            OpenIddictConstants.Permissions.Scopes.Profile,
+                            OpenIddictConstants.Permissions.Scopes.Roles
+                        }
                     };
 
                     await manager.CreateAsync(descriptor, cancellationToken);
