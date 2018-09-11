@@ -65,6 +65,7 @@ TestResult.xml
 [Dd]ebugPS/
 [Rr]eleasePS/
 dlldata.c
+realworld.db
 
 # DNX
 project.lock.json
