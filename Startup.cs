@@ -63,16 +63,22 @@ namespace GenVue
             services.AddDbContext<DefaultDbContext>(options =>
             {
                 // database driver selection
-                if (Configuration["Data:Provider"] == "postgress" )
+                switch (Configuration["Data:Provider"])
                 {
-                    // Configure the context to use Postgress database.
-                    // Tested on Postgress 10
-                    options.UseNpgsql(Configuration["Data:DefaultConnection:ConnectionString"]);
-                }
-                else
-                {
-                    // Configure the context to use Microsoft SQL Server.
-                    options.UseSqlServer(Configuration["Data:DefaultConnection:ConnectionString"]);
+                    case "postgress":
+                         // Configure the context to use Postgress database.
+                        // Tested on Postgress 10
+                        options.UseNpgsql(Configuration["Data:DefaultConnection:ConnectionString"]);
+                        break;
+                    case "sqlite":
+                        options.UseSqlite("Filename="+Configuration["Data:DefaultConnection:databaseName"]);
+                        break;
+                    case "sqlserver":
+                        // Configure the context to use Microsoft SQL Server.
+                        options.UseSqlServer(Configuration["Data:DefaultConnection:ConnectionString"]);
+                        break;
+                    default:
+                        break;
                 }
 
                 // Register the entity sets needed by OpenIddict.
