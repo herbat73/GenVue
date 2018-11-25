@@ -114,9 +114,6 @@ namespace GenVue
                 options.SignIn.RequireConfirmedEmail = true;
             });
 
-            services.AddAuthentication()
-                .AddOAuthValidation();
-
             services.AddOpenIddict()
 
             // Register the OpenIddict core services.
