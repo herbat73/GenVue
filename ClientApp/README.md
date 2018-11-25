@@ -1,6 +1,6 @@
-# penguinupload-web-client
+# upload-web-client
 
-> PenguinUpload Web Client
+> Vue.Js Upload Web Client
 
 ## Build Setup
 
