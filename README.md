@@ -1,6 +1,6 @@
 # Asp.NETCore 2.0 Vue 2 with WebApi Authorization Starter template
 
-This repo contains an AspNetCore 2 + Vue.js 2 starter template (VS2017) + NetCore WebAPI + OpenIddict authorization. 
+This repo contains an AspNetCore 2.1 + Vue.js 2 starter template (VS2017) + NetCore WebAPI + OpenIddict authorization. 
 ---
 
 # Table of Contents
@@ -12,7 +12,7 @@ This repo contains an AspNetCore 2 + Vue.js 2 starter template (VS2017) + NetCor
 * [Extras](#extras)
 * [Special Thanks](#special-thanks)
 * [License](#license)
-* [Vue & ASP.NET Consulting & training](##looking-for-vue--javascript-or-aspnet-consulting--training--support)
+* [Vue & ASP.NET Core Consulting & training](##looking-for-vue--javascript-or-aspnet-consulting--training--support)
 
 # Features
 
@@ -49,7 +49,7 @@ This repo contains an AspNetCore 2 + Vue.js 2 starter template (VS2017) + NetCor
   - Vuex (State Store)
 - **OpenIddict 2.0.0**
   - Easy-to-use OpenID Connect server for ASP.NET Core
-- **Webpack 2**
+- **Webpack 4**
   - HMR (Hot Module Replacement/Reloading)
 - **Vuetifyjs**
   - Material Component Framework for Vue
@@ -57,12 +57,12 @@ This repo contains an AspNetCore 2 + Vue.js 2 starter template (VS2017) + NetCor
 # Prerequisites:
  * nodejs > 6
  * VS2017
- * dotnet core 2.0
+ * dotnet core 2.1
 
 # Installation / Getting Started:
  * Clone this repo
  * At the repo's root directory run `dotnet restore`
- * Restore Node dependencies by running `npm install` in ClientApp folder (there is package.json and wepack config files) and this way install all required modules
+ * Restore Node dependencies by running `npm install` in root folder (there is package.json and wepack config files) and this way install all required modules
  * Build the Vue web application (`npm run build`)
  
 finally
@@ -73,6 +73,15 @@ finally
 # Extras
 
 - Get Chrome DevTools for Vue [here](https://chrome.google.com/webstore/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
+
+# Webpack build
+
+The css is not generated while you are in development mode. They are going to be created only when you will use the dotnet publish command or as an alternative, you can also go and type npm run build -- --prod which will launch the production build with the minification and extraction of the files.
+
+Important: Currently, webpack clean the entire wwwroot folder within the .Net project. So, if you have static files, move them within the ./ClientApp/static/ folder.
+
+# Webpack hot-reload
+When the .Net process is started, dotnet run your app, you will have to wait a little that the file are published in your wwwroot folder. After it is completed, you will be able to access your application at http://localhost:53703. Any modification made within the ClientApp folder will trigger on save a live update within the browser. Just refresh a broweser to see the changes.
 
 ### Special Thanks
 
@@ -85,6 +94,8 @@ https://github.com/andersco/FreedomCalculator2
 https://github.com/bradyholt/aspnet-core-vuejs-template
 
 https://github.com/0xFireball/PenguinUpload
+
+https://github.com/Nordes/HoNoSoFt.DotNet.Web.Spa.ProjectTemplates
 
 ----
 
