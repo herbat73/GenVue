@@ -1,27 +1,27 @@
-import Landing from './pages/Landing.vue'
-import About from './pages/About.vue'
-import Login from './pages/Login.vue'
-import Logout from './pages/Logout.vue'
-import Account from './pages/Account.vue'
-import Dashboard from './pages/Dashboard.vue'
-import Files from './pages/Files.vue'
-import Counter from './pages/Counter.vue'
-import Customers from './pages/Customers.vue'
-import NotInRolePage from './pages/NotInRolePage.vue'
-import AdminPage from './pages/admin/AdminPage.vue'
-import Register from './pages/admin/Register.vue'
-import UsersPage from './pages/admin/UsersPage.vue'
-import GroupsPage from './pages/admin/GroupsPage.vue'
-import GroupForm from './pages/admin/GroupForm.vue'
-import FileCategoriesPage from './pages/admin/FileCategoriesPage.vue'
-import FileCategoryForm from './pages/admin/FileCategoryForm.vue'
-import ActivityLogsPage from './pages/admin/ActivityLogsPage.vue'
-import GroupFiles from './pages/admin/GroupFiles.vue'
-import FileCategoryFiles from './pages/admin/FileCategoryFiles.vue'
-import UsersInGroup from './pages/admin/UsersInGroup.vue'
-import AddUserToGroup from './pages/admin/AddUserToGroup.vue'
+import Landing from 'pages/Landing.vue'
+import About from 'pages/About.vue'
+import Login from 'pages/Login.vue'
+import Logout from 'pages/Logout.vue'
+import Account from 'pages/Account.vue'
+import Dashboard from 'pages/Dashboard.vue'
+import Files from 'pages/Files.vue'
+import Counter from 'pages/Counter.vue'
+import Customers from 'pages/Customers.vue'
+import NotInRolePage from 'pages/NotInRolePage.vue'
+import AdminPage from 'pages/admin/AdminPage.vue'
+import Register from 'pages/admin/Register.vue'
+import UsersPage from 'pages/admin/UsersPage.vue'
+import GroupsPage from 'pages/admin/GroupsPage.vue'
+import GroupForm from 'pages/admin/GroupForm.vue'
+import FileCategoriesPage from 'pages/admin/FileCategoriesPage.vue'
+import FileCategoryForm from 'pages/admin/FileCategoryForm.vue'
+import ActivityLogsPage from 'pages/admin/ActivityLogsPage.vue'
+import GroupFiles from 'pages/admin/GroupFiles.vue'
+import FileCategoryFiles from 'pages/admin/FileCategoryFiles.vue'
+import UsersInGroup from 'pages/admin/UsersInGroup.vue'
+import AddUserToGroup from 'pages/admin/AddUserToGroup.vue'
 
-const main = [
+export const routes = [
   {
     path: '/',
     name: 'landing',
@@ -169,7 +169,3 @@ const main = [
   },
 ]
 
-const error = [
-]
-
-export default [].concat(main, error)

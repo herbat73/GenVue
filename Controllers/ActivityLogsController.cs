@@ -1,8 +1,6 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
 using System.Linq;
 using GenVue.Model;
 using AspNet.Security.OAuth.Validation;

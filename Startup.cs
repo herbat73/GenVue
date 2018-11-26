@@ -16,18 +16,18 @@ using System.Threading;
 using OpenIddict.Core;
 using NLog.Extensions.Logging;
 using NLog.Web;
-using GenVue.Middleware;
-using System.IO;
 using GenVue.Configuration;
 using OpenIddict.Abstractions;
 using OpenIddict.EntityFrameworkCore.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.ResponseCompression;
+using GenVue.CSharp.Extensions;
+using GenVue.Middleware;
 
 namespace GenVue
 {
     public class Startup
     {
-        private static string ClientAppPath = "ClientApp/";
-
         public IHostingEnvironment CurrentEnvironment { get; protected set; }
         public IConfigurationRoot Configuration { get; }
 
@@ -51,7 +51,20 @@ namespace GenVue
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
+            // Add framework services
+            services.AddMvc()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+                .AddJsonOptions(options =>
+                {
+                    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+                });
+
+            // Enable the Gzip compression especially for Kestrel
+            services.Configure<GzipCompressionProviderOptions>(options => options.Level = System.IO.Compression.CompressionLevel.Optimal);
+            services.AddResponseCompression(options =>
+            {
+                options.EnableForHttps = true;
+            });
 
             // app config read from appsettings
             services.Configure<UploadConfiguration>(
@@ -173,15 +186,6 @@ namespace GenVue
             // default token format or with reference tokens and cannot be used with
             // JWT tokens. For JWT tokens, use the Microsoft JWT bearer handler.
             .AddValidation();
-
-            services.AddTransient<IEmailSender, AuthMessageSender>();
-            services.AddTransient<ISmsSender, AuthMessageSender>();
-
-            // Add framework services
-            services.AddMvc().AddJsonOptions(options =>
-            {
-                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
-            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -189,27 +193,25 @@ namespace GenVue
         {
             loggerFactory.AddNLog();
 
-            app.UseRequestIPMiddleware();
-
-            ClientAppPath = Path.Combine(Directory.GetCurrentDirectory(), ClientAppPath);
+            app.UseServerSentEventsMiddleware();
 
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
-                {
-                    HotModuleReplacement = true,
-                    ProjectPath = ClientAppPath,
-                    ConfigFile = $"{ClientAppPath}webpack.config.js",
-                    HotModuleReplacementEndpoint = "/dist/__webpack_hmr"
-                });
+                app.UseWebpackDevMiddleware(
+                    new WebpackDevMiddlewareOptions
+                    {
+                        HotModuleReplacement = true,
+                        ConfigFile = "./build/webpack.config.js"
+                    });
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseHsts();
             }
 
-            app.UseStaticFiles();
+            app.UseHttpsRedirection();
+            app.UseResponseCompression(); // No need if you use IIS, but really something good for Kestrel!
 
             app.UseAuthentication();
 
@@ -225,16 +227,13 @@ namespace GenVue
                 FileCategoriesInit.Initialize(serviceProvider);
             }
 
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
-
-                routes.MapSpaFallbackRoute(
-                    name: "spa-fallback",
-                    defaults: new { controller = "Home", action = "Index" });
-            });
+            // Idea: https://code.msdn.microsoft.com/How-to-fix-the-routing-225ac90f
+            // This avoid having a real mvc view. You have other way of doing, but this one works
+            // properly.
+            app.UseSpa();
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
+            app.UseMvc();
         }
 
         private async Task InitializeAsync(IServiceProvider services, CancellationToken cancellationToken)

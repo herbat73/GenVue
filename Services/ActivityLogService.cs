@@ -1,10 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using GenVue.Model;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 
 namespace GenVue.Services
 {
@@ -28,6 +24,5 @@ namespace GenVue.Services
             await _context.ActivityLogs.AddAsync (activityLog);
             await _context.SaveChangesAsync();
         }
-
     }
 }

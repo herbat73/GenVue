@@ -1,14 +1,14 @@
 <template>
   <div class="intro">
     <div class="text-md-center">
-        <img src="iconadminpage.png" />
-        <h1 class="app-title">{{ appName }}</h1>
+      <img src="/static/images/icon.png" />
+      <h1>{{ appName }}</h1>
     </div>
-      <div class="text-md-center">
-          <p>
-              this is Admin page
-          </p>
-      </div>
+    <div class="text-md-center">
+      <p>
+        just a test web application for file sharing
+      </p>
+    </div>
   </div>
 </template>
 

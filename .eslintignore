@@ -1,0 +1,8 @@
+######################################################
+# https://eslint.org/docs/user-guide/configuring
+######################################################
+# /node_modules/* and /bower_components/* in the project root are ignored by default
+# Ignore built files except build/index.js
+/ClientApp/Static/**/*.js
+
+# !build/index.js ... if i would like to ignore all except that... then it's the way

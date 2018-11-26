@@ -1,5 +1,5 @@
 .DS_Store
-/ClientApp/node_modules/
+/node_modules/
 /ClientApp/npm-debug.log
 
 /Properties/launchSettings.json
@@ -28,7 +28,6 @@ package-lock.json
 [Rr]eleases/
 x64/
 x86/
-build/
 bld/
 bin/
 Bin/
