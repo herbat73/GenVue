@@ -30,9 +30,6 @@
     <Content Remove="ClientApp\**" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="ClientApp\package.json" />
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="Logs\" />
     <Folder Include="UploadedFiles\" />
     <Folder Include="UploadedFiles\_privateFiles\" />

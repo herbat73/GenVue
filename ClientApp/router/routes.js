@@ -41,7 +41,7 @@ export const routes = [
     path: '/register',
     name: 'register',
     component: Register,
-    meta: { requiresAuth: true, requiresAdminRole : true }
+    meta: { requiresAuth: true, requiresAdminRole: true }
   },
   {
     path: '/logout',
@@ -81,7 +81,7 @@ export const routes = [
     path: '/admin',
     name: 'adminpage',
     component: AdminPage,
-    meta: { requiresAuth: true, requiresAdminRole : true }
+    meta: { requiresAuth: true, requiresAdminRole: true }
   },
   {
     path: '/notinrole',
@@ -99,7 +99,7 @@ export const routes = [
     path: '/groupedit/:id',
     name: 'groupedit',
     component: GroupForm,
-    props: true, 
+    props: true,
     meta: { requiresAuth: true, requiresAdminRole: true }
   },
   {
@@ -166,6 +166,5 @@ export const routes = [
     component: AddUserToGroup,
     props: true,
     meta: { requiresAuth: true, requiresAdminRole: true }
-  },
+  }
 ]
-
